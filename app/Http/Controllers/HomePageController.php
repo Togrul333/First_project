@@ -12,7 +12,7 @@ class HomePageController extends Controller
     public function index()
     {
         //print_r(Category::all()); die;
-        $data['articles'] = Article::orderBy('created_at', 'DESC')->get();
+        $data['articles'] = Article::orderBy('created_at', 'DESC')->paginate(2);
         $data['categories'] = Category::inRandomOrder()->get();
         return view('front.homepage', $data);
     }
@@ -29,6 +29,10 @@ class HomePageController extends Controller
 
     public function category($slug)
     {
-        return $slug;
+        $category = Category::whereSlug($slug)->first() ?? abort(403, 'boyle bir kategory bulunamadi');
+        $data['category'] = $category;
+        $data['articles']=Article::where('category_id',$category->id)->orderBy('created_at', 'DESC')->get();
+        $data['categories'] = Category::inRandomOrder()->get();
+        return view('front.category',$data);
     }
 }
