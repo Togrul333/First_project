@@ -45,6 +45,9 @@
                         <a class="nav-link" href="{{route('page',$page->slug)}}">{{$page->title}}</a>
                     </li>
                 @endforeach
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('contact')}}">Iletisim</a>
+                </li>
             </ul>
         </div>
     </div>
