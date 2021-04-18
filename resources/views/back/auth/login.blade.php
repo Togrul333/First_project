@@ -41,14 +41,19 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Xow geldiniz</h1>
                                 </div>
-                                <form class="user">
+                                @if($errors->any())
+                                    <div class="alert alert-danger">  {{$errors->first()}}</div>
+
+                                @endif
+                                <form method="post" action="{{route('admin.login.post')}}" class="user">
+                                    @csrf
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
+                                        <input type="email"  name="email" class="form-control form-control-user"
                                                id="exampleInputEmail" aria-describedby="emailHelp"
                                                placeholder=" Email giriniz...">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input type="password" name="password" class="form-control form-control-user"
                                                id="exampleInputPassword" placeholder="Sifre">
                                     </div>
                                     <div class="form-group">
@@ -57,9 +62,9 @@
                                             <label class="custom-control-label" for="customCheck">Beni hatirla</label>
                                         </div>
                                     </div>
-                                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                    <button type="submit" href="index.html" class="btn btn-primary btn-user btn-block">
                                         Giris
-                                    </a>
+                                    </button>
                                     <hr>
 
                                 </form>
