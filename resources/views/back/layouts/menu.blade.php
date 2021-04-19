@@ -7,7 +7,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
 {{--            <div class="sidebar-brand-icon rotate-n-15">--}}
 {{--                <i class="fas fa-laugh-wink"></i>--}}
 {{--            </div>--}}
@@ -18,10 +18,10 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+        <li class="nav-item @if(\Illuminate\Support\Facades\Request::segment(2)=="panel") active @endif">
+            <a class="nav-link" href="{{route('admin.dashboard')}}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>Panel</span></a>
         </li>
 
         <!-- Divider -->
@@ -29,21 +29,21 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Interface
+            Icerik yonetimi
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(2)=="makaleler") in @else collapsed @endif" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Components</span>
+                <i class="fas fa-fw fa-edit"></i>
+                <span>Makaleler</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item" href="buttons.html">Buttons</a>
-                    <a class="collapse-item" href="cards.html">Cards</a>
+                    <h6 class="collapse-header">Makale islemleri:</h6>
+                    <a class="collapse-item" href="{{route('admin.makaleler.index')}}">Tum makaleler</a>
+                    <a class="collapse-item" href="cards.html">Makale olustur</a>
                 </div>
             </div>
         </li>
@@ -85,7 +85,7 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.html">Login</a>
+                    <a class="collapse-item" href="#">Login</a>
                     <a class="collapse-item" href="register.html">Register</a>
                     <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                     <div class="collapse-divider"></div>
@@ -221,7 +221,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -239,9 +239,9 @@
                                 Activity Log
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="{{route('admin.logout')}}" >
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                Cikis Yap
                             </a>
                         </div>
                     </li>
@@ -255,7 +255,7 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">@yield('title')</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                    <a href="{{route('homepage')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i>Siteyi goruntule</a>
                 </div>
 
