@@ -19,5 +19,6 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('back/')}}/css/sb-admin-2.min.css" rel="stylesheet">
+    @toastr_css
 
 </head>

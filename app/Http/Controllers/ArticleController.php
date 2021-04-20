@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Article;
 
@@ -14,8 +15,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles=Article::orderBy('created_at','ASC')->get();
-        return view('back.articles.index',compact('articles'));
+        $articles = Article::orderBy('created_at', 'ASC')->get();
+        return view('back.articles.index', compact('articles'));
     }
 
     /**
@@ -25,24 +26,41 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('back.articles.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'title'=>'min:3',
+            'image'=>'required|image|max:2048'
+        ]);
+        $article = new Article();
+        $article->title = $request->title;
+        $article->category_id = $request->category;
+        $article->content = $request->content;
+        $article->slug = $request->title;
+        if ($request->hasFile('image')) {
+            $imageName=$request->title.'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('uploads'),$imageName);
+            $article->image='uploads/'.$imageName;
+        }
+        $article->save();
+        toastr()->success('Basarili', 'Makale basariyla olusturuldu');
+        return redirect()->route('admin.makaleler.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -53,19 +71,19 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        return $id . 'edit';
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -76,7 +94,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -28,7 +28,7 @@
                             <td>{{$article->created_at->diffForHumans()}}</td>
                             <td>
                                 <a href="#" title="Goruntule" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                <a href="#" title="Duzenle" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
+                                <a href="{{route('admin.makaleler.edit',$article->id)}}" title="Duzenle" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
                                 <a href="#" title="Sil" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>

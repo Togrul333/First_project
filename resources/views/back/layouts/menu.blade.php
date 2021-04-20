@@ -42,8 +42,8 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Makale islemleri:</h6>
-                    <a class="collapse-item" href="{{route('admin.makaleler.index')}}">Tum makaleler</a>
-                    <a class="collapse-item" href="cards.html">Makale olustur</a>
+                    <a class="collapse-item " href="{{route('admin.makaleler.index')}}">Tum makaleler</a>
+                    <a class="collapse-item  " href="{{route('admin.makaleler.create')}}">Makale olustur</a>
                 </div>
             </div>
         </li>
