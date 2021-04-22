@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use Illuminate\Support\Facades\File;
 
 class ArticleController extends Controller
 {
@@ -39,18 +40,18 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'title'=>'min:3',
-            'image'=>'required|image|max:2048'
+            'title' => 'min:3',
+            'image' => 'required|image|max:2048'
         ]);
         $article = new Article();
-        $article->title = $request->title;
-        $article->category_id = $request->category;
-        $article->content = $request->content;
+        $article->title = $request->get('title');
+        $article->category_id = $request->get('category');
+        $article->content = $request->get('content');
         $article->slug = $request->title;
         if ($request->hasFile('image')) {
-            $imageName=$request->title.'.'.$request->image->getClientOriginalExtension();
-            $request->image->move(public_path('uploads'),$imageName);
-            $article->image='uploads/'.$imageName;
+            $imageName = $request->title . '.' . $request->image->getClientOriginalExtension();
+            $request->image->move(public_path('uploads'), $imageName);
+            $article->image = '/uploads/' . $imageName;
         }
         $article->save();
         toastr()->success('Basarili', 'Makale basariyla olusturuldu');
@@ -76,7 +77,9 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        return $id . 'edit';
+        $article = Article::findOrFail($id);
+        $categories = Category::all();
+        return view('back.articles.update', compact('categories', 'article'));
     }
 
     /**
@@ -88,8 +91,45 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'min:3',
+            'image' => 'image|max:2048'
+        ]);
+        $article = Article::findOrFail($id);
+        $article->title = $request->title;
+        $article->category_id = $request->category;
+        $article->content = $request->get('content');
+        $article->slug = $request->title;
+        if ($request->hasFile('image')) {
+            $imageName = $request->title . '.' . $request->image->getClientOriginalExtension();
+            $request->image->move(public_path('uploads'), $imageName);
+            $article->image = '/uploads/' . $imageName;
+        }
+        $article->save();
+        toastr()->success('Basarili', 'Makale basariyla guncellendi');
+        return redirect()->route('admin.makaleler.index');
     }
+
+    public function delete($id)
+    {
+        Article::find($id)->delete();
+        toastr()->success('Makale basariyla silindi');
+        return redirect()->route('admin.makaleler.index');
+    }
+
+    public function trashed()
+    {
+        $articles = Article::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+        return view('back.articles.trashed', compact('articles'));
+    }
+
+    public function recover($id)
+    {
+        Article::onlyTrashed()->find($id)->restore();
+        toastr()->success('Makale basariyla kurtarildi');
+        return redirect()->back();
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -99,6 +139,19 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Article::find($id)->delete();
+        toastr()->success('Makale basariyla (zibil qutusuna atdi) silindi');
+        return redirect()->route('admin.makaleler.index');
+    }
+
+    public function hardDelete($id)
+    {
+        $article = Article::onlyTrashed()->find($id);
+        if (File::exists($article->image)) {
+           File::delete(public_path($article->image));
+        }
+        $article->forceDelete();
+        toastr()->success('Makale basariyla silindi');
+        return redirect()->route('admin.makaleler.index');
     }
 }

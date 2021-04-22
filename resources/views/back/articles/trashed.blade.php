@@ -1,10 +1,10 @@
 @extends('back.layouts.master')
-@section('title','Tum makaleler')
+@section('title','Silinen  makaleler')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-            <a href="{{route('admin.trashed.article')}}" class="btn btn-warning btn-sm"><i class="fa fa-frash"></i>Silinen makaleler</a>
+            <a href="{{route('admin.makaleler.index')}}" class="btn btn-danger btn-sm"><i class="fa fa-frash"></i>Activ makaleler</a>
         </div>
 
         <div class="card-body">
@@ -29,13 +29,13 @@
                             <td>{{$article->hit}}</td>
                             <td>{{$article->created_at->diffForHumans()}}</td>
                             <td>
-                                <a href="#" title="Goruntule" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                <a href="{{route('admin.makaleler.edit',$article->id)}}" title="Duzenle" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
-                                <form method="post" action="{{route('admin.makaleler.destroy',$article->id)}}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" title="Sil" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
-                                </form>
+                               <a href="{{route('admin.recover.article',$article->id)}}" title="Silmekden qurtar" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
+                                <a href="{{route('admin.hard.delete.article',$article->id)}}" title="Sil" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+{{--                                <form method="post" action="{{route('admin.makaleler.destroy',$article->id)}}">--}}
+{{--                                    @csrf--}}
+{{--                                    @method('DELETE')--}}
+{{--                                    <button type="submit" title="Sil" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>--}}
+{{--                                </form>--}}
                             </td>
                         </tr>
                     @endforeach

@@ -14,10 +14,13 @@ Route::prefix('admin')->name('admin.')->middleware('isLogin')->group(function ()
 });
 Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function () {
     Route::get('panel', [App\Http\Controllers\Dashboard::class, 'index'])->name('dashboard');
+    Route::get('makaleler/silinenler', [App\Http\Controllers\ArticleController::class, 'trashed'])->name('trashed.article');
+    Route::get('deletearticle/{id}', [App\Http\Controllers\ArticleController::class, 'delete'])->name('delete.article');
+    Route::get('harddeletearticle/{id}', [App\Http\Controllers\ArticleController::class, 'hardDelete'])->name('hard.delete.article');
+    Route::get('recoverarticle/{id}', [App\Http\Controllers\ArticleController::class, 'recover'])->name('recover.article');
     Route::resource('makaleler', App\Http\Controllers\ArticleController::class);
     Route::get('cikis', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +29,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
 */
 Route::get('/', [App\Http\Controllers\HomePageController::class, 'index'])->name('homepage');
+
+
 Route::get('/iletisim', [App\Http\Controllers\HomePageController::class, 'contact'])->name('contact');
 Route::post('/iletisim', [App\Http\Controllers\HomePageController::class, 'contactpost'])->name('contact.post');
+
 
 Route::get('/kategory/{category}', [App\Http\Controllers\HomePageController::class, 'category'])->name('category');
 Route::get('/{category}/{slug}', [App\Http\Controllers\HomePageController::class, 'single'])->name('single');
